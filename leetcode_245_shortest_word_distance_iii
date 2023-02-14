@@ -1,0 +1,74 @@
+245. Shortest Word Distance III
+
+Given an array of strings wordsDict and two strings that already exist in the array word1 and word2, return the shortest distance between the occurrence of these two words in the list.
+
+Note that word1 and word2 may be the same. It is guaranteed that they represent two individual words in the list.
+
+ 
+
+Example 1:
+
+Input: wordsDict = ["practice", "makes", "perfect", "coding", "makes"], word1 = "makes", word2 = "coding"
+Output: 1
+Example 2:
+
+Input: wordsDict = ["practice", "makes", "perfect", "coding", "makes"], word1 = "makes", word2 = "makes"
+Output: 3
+
+
+class Solution(object):
+    def shortestWordDistance(self, wordsDict, word1, word2):
+        """
+        :type wordsDict: List[str]
+        :type word1: str
+        :type word2: str
+        :rtype: int
+        """
+        
+
+        '''
+        Solution -1:
+
+        wordIndexes = collections.defaultdict(list)
+        for index, word in enumerate(wordsDict):
+            wordIndexes[word].append(index)
+        
+        shortestDistance = len(wordsDict)
+        if word1 == word2:
+            wordIndexes = wordIndexes[word1]
+            # l1, l2 = 0, 0
+            for i in range(len(wordIndexes) - 1):
+                shortestDistance = min(shortestDistance, abs(wordIndexes[i] - wordIndexes[i+1]))
+        else:
+            wordIndexes1 = wordIndexes[word1]
+            wordIndexes2 = wordIndexes[word2]
+            
+            l1, l2 = 0, 0
+
+            while l1 < len(wordIndexes1) and l2 < len(wordIndexes2):
+                shortestDistance = min(shortestDistance, abs(wordIndexes1[l1]- wordIndexes2[l2]))
+                if wordIndexes1[l1] < wordIndexes2[l2]:
+                    l1 += 1
+                else:
+                    l2 += 1
+                
+
+        return shortestDistance
+        '''
+
+        #solution -2
+
+        minimum = len(wordsDict)
+        index1, index2 = -1, -1
+        for i in range(len(wordsDict)):
+            if wordsDict[i] == word1:
+                index1 = i
+                if index2 > -1:
+                    minimum = min(minimum, abs(index1 - index2))
+            if wordsDict[i] == word2:
+                index2 = i
+                if index1 > -1 and index1 != index2:
+                    minimum = min(minimum, abs(index1 - index2))
+        return minimum
+
+
