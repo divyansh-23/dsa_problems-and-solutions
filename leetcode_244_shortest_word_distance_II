@@ -1,0 +1,61 @@
+'''
+Design a data structure that will be initialized with a string array, and then it should answer queries of the shortest distance between two different strings from the array.
+
+Implement the WordDistance class:
+
+WordDistance(String[] wordsDict) initializes the object with the strings array wordsDict.
+int shortest(String word1, String word2) returns the shortest distance between word1 and word2 in the array wordsDict.
+ 
+
+Example 1:
+
+Input
+["WordDistance", "shortest", "shortest"]
+[[["practice", "makes", "perfect", "coding", "makes"]], ["coding", "practice"], ["makes", "coding"]]
+Output
+[null, 3, 1]
+
+Explanation
+WordDistance wordDistance = new WordDistance(["practice", "makes", "perfect", "coding", "makes"]);
+wordDistance.shortest("coding", "practice"); // return 3
+wordDistance.shortest("makes", "coding");    // return 1 
+
+'''
+
+from collections import defaultdict
+
+class WordDistance(object):
+
+    def __init__(self, wordsDict):
+        """
+        :type wordsDict: List[str]
+        """
+        self.locations = defaultdict(list)
+        for index, word in enumerate(wordsDict):
+            self.locations[word].append(index)
+
+    def shortest(self, word1, word2):
+        """
+        :type word1: str
+        :type word2: str
+        :rtype: int
+        """
+        word1_locations = self.locations[word1]
+        word2_locations = self.locations[word2]
+        l1, l2 = 0, 0
+
+        shortest_distance = float("inf")
+        while l1 < len(word1_locations) and l2 < len(word2_locations):
+            shortest_distance = min(shortest_distance, abs(word1_locations[l1] - word2_locations[l2]))
+            
+            if word1_locations[l1] < word2_locations[l2]:
+                l1 += 1
+            else:
+                l2 += 1
+            
+        return shortest_distance
+
+
+# Your WordDistance object will be instantiated and called as such:
+# obj = WordDistance(wordsDict)
+# param_1 = obj.shortest(word1,word2)
